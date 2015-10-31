@@ -29,12 +29,19 @@ public class ActividadPrincipal extends AppCompatActivity {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
-        TDWGroupAPIService apiService = retrofit.create(TDWGroupAPIService.class);
 
+        TDWGroupAPIService apiService = retrofit.create(TDWGroupAPIService.class);
+        //peticion asincrona para obtener gtrupo por id
         Call<Group> call_async = apiService.getGroupById(19);
 
+        //encolamos la peticion
         // Asíncrona
         call_async.enqueue(new Callback<Group>() {
+            /**
+             * indica que haces cuando responda el servicio
+             * @param response
+             * @param retrofit
+             */
             @Override
             public void onResponse(Response<Group> response, Retrofit retrofit) {
                 // recupero el grupo obtenido
@@ -43,6 +50,10 @@ public class ActividadPrincipal extends AppCompatActivity {
                 Log.i(LOG_TAG, "ASYNC => " + g.toString());
             }
 
+            /**
+             * si hay fallo
+             * @param t
+             */
             @Override
             public void onFailure(Throwable t) {
                 Log.e(LOG_TAG, t.getMessage());
